@@ -1,0 +1,13 @@
+# Ignorar node_modules en cualquier carpeta
+**/node_modules
+
+# Ignorar dist en cualquier carpeta
+**/dist
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno
+#.env
+#.env.local
