@@ -1,12 +1,32 @@
-import { Link, Form } from "react-router-dom"
+import { Link, Form, useActionData, type ActionFunctionArgs } from "react-router-dom"
+import ErrorMessage from "../components/ErrorMessage"
 
 
-export async function action() {
-    console.log('desde action...')
+export async function action({request} : ActionFunctionArgs) {
+
+    const data = Object.fromEntries(await request.formData())
+    console.log(data)
+
+    let error = ''
+    if(Object.values(data).includes('')){
+        error = 'Todos los campos son obligatorios'
+    }
+
+    if(error.length)
+    {
+        return error
+    }
+
+    return {}
 }
 
 
 export default function NewProduct() {
+
+
+    const error = useActionData() as string
+    console.log(error)
+
   return (
     <>
         <div className="flex justify-between">
@@ -18,6 +38,8 @@ export default function NewProduct() {
                 Volver a Productos
             </Link>
         </div>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <Form
             className="mt-10"
