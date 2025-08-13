@@ -15,7 +15,7 @@ export async function addProduct(data: ProductData) {
         console.log(result)
 
         if(result.success){
-
+            
         }else{
             throw new Error('Datos no válidos')
         }
