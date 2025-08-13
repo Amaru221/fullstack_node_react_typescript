@@ -1,12 +1,22 @@
-import { Link, Form, useActionData, type ActionFunctionArgs, redirect, type LoaderFunctionArgs } from "react-router-dom"
+import { Link, Form, useActionData, type ActionFunctionArgs, redirect, type LoaderFunctionArgs, useLoaderData } from "react-router-dom"
 import ErrorMessage from "../components/ErrorMessage"
-import { addProduct } from "../services/ProductService"
+import { addProduct, getProductById } from "../services/ProductService"
 import ProductDetails from "../components/ProductDetails"
+import type { Product } from "../types"
 
 
 export async function loader({params} :LoaderFunctionArgs){
-    console.log(params.id)
-    return {}
+    
+    
+    if(params.id !== undefined){
+        const product = await getProductById(params.id)
+        console.log(product)
+        if(!product){
+            throw new Response('', {status: 404, statusText: 'No Encontrado'})
+        }
+        return product
+    }
+
 }
 
 export async function action({request} : ActionFunctionArgs) {
@@ -31,6 +41,7 @@ export async function action({request} : ActionFunctionArgs) {
 
 export default function EditProduct() {
 
+    const product = useLoaderData() as Product
     const error = useActionData() as string
 
   return (
@@ -64,6 +75,7 @@ export default function EditProduct() {
                     className="mt-2 block w-full p-3 bg-gray-50"
                     placeholder="Nombre del Producto"
                     name="name"
+                    defaultValue={product.name}
                 />
             </div>
             <div className="mb-4">
@@ -77,6 +89,7 @@ export default function EditProduct() {
                     className="mt-2 block w-full p-3 bg-gray-50"
                     placeholder="Precio Producto. ej. 200, 300"
                     name="price"
+                    defaultValue={product.price}
                 />
             </div>
             <input
