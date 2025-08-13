@@ -22,7 +22,8 @@ export const router = createBrowserRouter([
             {
                 path: 'productos/:id/editar', //ROA Pattern, Resource-oriented design
                 element: <EditProduct />,
-                loader: editProductLoader
+                loader: editProductLoader,
+                action: editProductAction
             }
         ]
     }
