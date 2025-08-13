@@ -49,17 +49,23 @@ export async function getProducts() {
 }
 
 
-export async function getProductById(id : Product['id']) {
-    try {
-        const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
-        const {data} = await axios(url)
-        const result = safeParse(ProductSchema, data.data)
-        if(result.success){
-            return result.output
-        }else{
-            throw new Error('Hubo un error')
+    export async function getProductById(id : Product['id']) {
+        try {
+            const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
+            const {data} = await axios(url)
+            const result = safeParse(ProductSchema, data.data)
+            if(result.success){
+                return result.output
+            }else{
+                throw new Error('Hubo un error')
+            }
+        } catch (error) {
+            console.log(error)
         }
-    } catch (error) {
-        console.log(error)
     }
-}
+
+    export async function updateProduct(data : ProductData, id : Product['id']) {
+
+        console.log(data)
+        console.log(id)
+    }
