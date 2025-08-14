@@ -1,10 +1,20 @@
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useNavigate, Form, type ActionFunctionArgs, redirect} from 'react-router-dom'
 import type { Product } from "../types"
 import { formatCurrency } from "./utils"
+import { deleteProduct } from '../services/ProductService'
 
 
 type ProductDetailsProps = {
   product: Product
+}
+
+export async function action({params} : ActionFunctionArgs) {
+  console.log('dese action de ProductDetails...')
+  if(params.id !== undefined){
+    await deleteProduct(+params.id)
+    return redirect('/')
+  }
+    
 }
 
 export default function ProductDetails({product}: ProductDetailsProps) {
@@ -30,6 +40,23 @@ export default function ProductDetails({product}: ProductDetailsProps) {
               onClick={() => navigate(`/productos/${product.id}/editar`)}
               className='bg-indigo-600 text-white rounded-lg w-full p-2 uppercase font-bold text-xs text-center'
             >Editar</button>
+
+            <Form 
+              className='w-full'
+              method='POST'
+              action={`productos/${product.id}/eliminar`}
+              onSubmit={(e) => {
+                  if(!confirm('¿Eliminar?')){
+                    e.preventDefault()
+                  }
+              }}
+            >
+              <input 
+                type='submit'
+                value='Eliminar'
+                className='bg-red-600 text-white rounded-lg w-full p-2 uppercase font-bold text-xs text-center'
+              ></input>
+            </Form>
           </div>
         </td>
     </tr> 
