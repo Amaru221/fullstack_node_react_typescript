@@ -87,3 +87,19 @@ export async function getProducts() {
             console.log(error)
         }
     }
+
+
+    export async function deleteProduct(id: Product['id']){
+        try {
+            const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
+            const {data} = await axios.delete(url)
+            const result = safeParse(ProductSchema, data.data)
+            if(result.success){
+                return result.output
+            }else{
+                throw new Error('Hubo un error')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
